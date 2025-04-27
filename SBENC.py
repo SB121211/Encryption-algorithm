@@ -1,9 +1,18 @@
-
+#Importing stuff...
 import random
 import re
+from colorama import Fore,Style,init
+import time
+
+init(autoreset=True)
+
+def banner():
+    print(Style.BRIGHT + Fore.LIGHTRED_EX + "\n--SBENC--")
+
 
 def encrypt(text,seed1,seed2,seed3):
     encryption = ""
+    #Assigning ranges...
     for i in text:
         if i.lower() == "a":
             encryption = encryption + str((random.randint(400,414)*seed1*seed2)+seed3) + " "
@@ -65,7 +74,7 @@ def encrypt(text,seed1,seed2,seed3):
         n_enc = n_enc + i[::-1] + " "
     return n_enc
 
-def decrypt(text,key):
+def decrypt(text,key):      #Reversing the encryption process...
     parts = text.split()
     m_text = ""
     for i in parts:
@@ -286,47 +295,57 @@ def key_translation(key):
             t_key = t_key + " "
     return t_key
 
-n = True
-try:
-    while n == True:
-        print("1. Encryption")
-        print("2. Decryption")
-        a = input("Enter the desired action: ")
-        if a == "1":
-            t = input("\n" + "Enter your text to encrypt: ")
-            text = t[::-1]
-            print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-            seed1 = random.randint(1235,2341)
-            seed2 = random.randint(2,9)
-            seed3 = random.randint(12345,34567)
-            print("Encrypted text: " + encrypt(text,seed1,seed2,seed3))
-            print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-            key = key_encryption(str(seed1),str(seed2),str(seed3))
-            print("Decryption key: " + key)
-            h = True
-            while h == True:
+def main():
+    banner()
+    n = True
+    try:
+        while n == True:
+            print(Fore.YELLOW + "1. Encryption")
+            print(Fore.YELLOW + "2. Decryption")
+            print(Style.RESET_ALL)
+            a = input("Enter the desired action: ") 
+            if a == "1":
+                t = input("\n" + "Enter your text to encrypt: ")
+                text = t[::-1]
+                print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+                seed1 = random.randint(1235,2341)
+                seed2 = random.randint(2,9)
+                seed3 = random.randint(12345,34567)
+                print("Encrypted text: " + encrypt(text,seed1,seed2,seed3))
+                print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+                key = key_encryption(str(seed1),str(seed2),str(seed3))
+                print("Decryption key: " + key)
+                h = True
+                while h == True:
+                    c = input("Do you want to continue?(y or n): ")
+                    if c == "n":
+                        n = False
+                        h = False
+                    elif c == "y":
+                        h = False
+                    else:
+                        print(Fore.RED + "Invalid input!")
+
+            elif a == "2":
+                text = input("\n" + "Enter the text to decrypt: ")
+                key = input("Enter the key: ")
+                a_key = key_translation(key)
+                print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+                t = decrypt(text,a_key)[::-1]
+                print("Here's the decrypted text: " + t)
+                print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
                 c = input("Do you want to continue?(y or n): ")
                 if c == "n":
                     n = False
-                    h = False
-                elif c == "y":
-                    h = False
-                else:
-                    print("Invalid input!")
 
-        elif a == "2":
-            text = input("\n" + "Enter the text to decrypt: ")
-            key = input("Enter the key: ")
-            a_key = key_translation(key)
-            print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-            t = decrypt(text,a_key)[::-1]
-            print("Here's the decrypted text: " + t)
-            print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-            c = input("Do you want to continue?(y or n): ")
-            if c == "n":
-                n = False
-except ValueError:
-    print("Invalid value!")
+    except ValueError:
+        print(Fore.RED + "Invalid value!")
+    except KeyboardInterrupt:
+        print(Fore.RED + "\nExitting...")
+        time.sleep(1)
+        
+    finally:
+        print(Fore.BLUE + "Have fun!")
+        print(Style.RESET_ALL)
 
-finally:
-    print("Have fun!")
+main()
