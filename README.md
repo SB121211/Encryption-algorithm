@@ -10,8 +10,8 @@ A seed-based algorithm to encrypt and decrypt simple messages in text format by 
 ## Installation
 1. Install python3
 2. Install dependencies:
-`pip install colorama time re random`
-3. Download the script:
+`pip install colorama`
+4. Download the script:
 `git clone https://github.com/SB121211/Encryption-algorithm.git `
 
 ## Usage
